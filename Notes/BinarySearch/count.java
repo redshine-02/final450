@@ -34,9 +34,10 @@ public class count {
         int t = c_binary(arr , ele , n);
         int c = 0;
         for(int i=t;i<n;i++){
-            if(arr[i]==ele){
-                c++;
+            if(arr[i]!=ele){
+                break;
             }
+            c++;
         }
 
         System.out.println(c);
