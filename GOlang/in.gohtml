@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filter and Data Table</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            max-width: 400px;
+        }
+        .table {
+            overflow: auto;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .table-container {
+            flex: 1 1 50%;
+        }
+        .table-container + .table-container {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <h2>Filter</h2>
+            <label for="subdepartment">Subdepartment:</label>
+            <select id="subdepartment" multiple>
+                <option value="">All</option>
+                <option value="subdept1">Subdepartment 1</option>
+                <option value="subdept2">Subdepartment 2</option>
+                <option value="subdept3">Subdepartment 3</option>
+            </select>
+            <br><br>
+            <label for="timeline">Timeline:</label>
+            <select id="timeline">
+                <option value="">All</option>
+                <option value="t1">Timeline 1</option>
+                <option value="t2">Timeline 2</option>
+                <option value="t3">Timeline 3</option>
+            </select>
+            <br><br>
+            <button id="searchButton">Search</button>
+        </div>
+
+        <div class="box">
+            <h2>Data Tables</h2>
+            <div class="row">
+                <div class="table-container">
+                    <h3>KPI 1</h3>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Subdepartment</th>
+                                    <th>KPI 1 Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Subdept 1</td>
+                                    <td>Data 1</td>
+                                </tr>
+                                <tr>
+                                    <td>Subdept 2</td>
+                                    <td>Data 2</td>
+                                </tr>
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <h3>KPI 2</h3>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Subdepartment</th>
+                                    <th>KPI 2 Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Subdept 1</td>
+                                    <td>Data 3</td>
+                                </tr>
+                                <tr>
+                                    <td>Subdept 2</td>
+                                    <td>Data 4</td>
+                                </tr>
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="table-container">
+                    <h3>KPI 3</h3>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Subdepartment</th>
+                                    <th>KPI 3 Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Subdept 1</td>
+                                    <td>Data 5</td>
+                                </tr>
+                                <tr>
+                                    <td>Subdept 2</td>
+                                    <td>Data 6</td>
+                                </tr>
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <h3>KPI 4</h3>
+                    <div class="table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Subdepartment</th>
+                                    <th>KPI 4 Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Subdept 1</td>
+                                    <td>Data 7</td>
+                                </tr>
+                                <tr>
+                                    <td>Subdept 2</td>
+                                    <td>Data 8</td>
+                                </tr>
+                                <!-- Add more rows as needed -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
