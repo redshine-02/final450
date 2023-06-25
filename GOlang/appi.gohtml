@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Real-Time Update with Filters and Clickable Cells</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
+    <style>
+        .box {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #aeaeae;
+        }
+        
+        .filter-box {
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 400px;
+        }
+        
+        .filter-box .form-group {
+            margin-right: 5px;
+            width: 150px;
+            justify-content: center;
+        }
+        
+        #filter2+.select2-container {
+            width: 150px;
+            align-content: center;
+        }
+        
+        #tables-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        table {
+            border-collapse: collapse;
+        }
+        
+        td {
+            cursor: pointer;
+            padding: 8px;
+        }
+        
+        td.filtered {
+            background-color: lightblue;
+        }
+        
+        td:hover {
+            background-color: lightgray;
+        }
+        
+        #applyFilterButton {
+            box-sizing: content-box;
+            width: auto;
+            height: auto;
+            padding: 6px 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <div class="box">
+                    <div class="filter-box">
+                        <div class="form-group">
+                            <label for="filter1">SubDepartment</label>
+                            <select id="filter1" class="form-control filter" multiple="multiple">
+              <!-- Options for Filter 1 -->
+              <option value="USA">USA</option>
+    
+            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter2">Timeline</label>
+                            <select id="filter2" class="form-control filter" multiple="multiple">
+              <!-- Options for Filter 2 -->
+            </select>
+                        </div>
+                        <div class="form-group">
+                            <button id="applyFilterButton" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="box">
+                    <div id="tables-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(".filter").select2();
+
+            var database = [{
+                KPI: "1",
+                Name: "John",
+                Country: "USA",
+                City: "New York"
+            }, {
+                KPI: "1",
+                Name: "Alice",
+                Country: "USA",
+                City: "Chicago"
+            }, {
+                KPI: "2",
+                Name: "Bob",
+                Country: "Canada",
+                City: "Toronto"
+            }, {
+                KPI: "2",
+                Name: "Jane",
+                Country: "Canada",
+                City: "Vancouver"
+            }, {
+                KPI: "3",
+                Name: "Mary",
+                Country: "USA",
+                City: "New York"
+            }, {
+                KPI: "3",
+                Name: "Peter",
+                Country: "USA",
+                City: "Chicago"
+            }, {
+                KPI: "4",
+                Name: "George",
+                Country: "Canada",
+                City: "Toronto"
+            }, {
+                KPI: "4",
+                Name: "Helen",
+                Country: "Canada",
+                City: "Vancouver"
+            }, ];
+
+            var dataMap = createDataMap(database);
+
+            function createDataMap(database) {
+                var dataMap = new Map();
+
+                database.forEach(function(row) {
+                    var kpi = row.KPI;
+                    var name = row.Name;
+                    var country = row.Country;
+                    var city = row.City;
+
+                    if (!dataMap.has(kpi)) {
+                        dataMap.set(kpi, new Map());
+                    }
+
+                    var innerMap = dataMap.get(kpi);
+                    innerMap.set(name, {
+                        country: country,
+                        city: city
+                    });
+                });
+
+                return dataMap;
+            }
+
+            function renderTables(filter1Values, filter2Values) {
+                var tablesContainer = $("#tables-container");
+                tablesContainer.empty();
+
+                if (filter1Values.length === 0 && filter2Values.length === 0) {
+                    // Show all data when no filters are applied
+                    dataMap.forEach(function(innerMap, kpi) {
+                        renderTable(kpi, innerMap, true);
+                    });
+                } else {
+                    // Filter the data based on selected values
+                    dataMap.forEach(function(innerMap, kpi) {
+                        var filteredMap = new Map();
+
+                        innerMap.forEach(function(value, name) {
+                            if (
+                                (filter1Values.length === 0 || filter1Values.includes(value.country)) &&
+                                (filter2Values.length === 0 || filter2Values.includes(value.city))
+                            ) {
+                                filteredMap.set(name, value);
+                            }
+                        });
+
+                        if (filteredMap.size > 0) {
+                            renderTable(kpi, filteredMap, false);
+                        }
+                    });
+                }
+            }
+
+            function renderTable(kpi, innerMap, showAll) {
+                var table = $("<table>").addClass("table");
+                var thead = $("<thead>");
+                var tbody = $("<tbody>");
+
+                var headerRow = $("<tr>");
+                headerRow.append($("<th>").text("KPI"));
+                headerRow.append($("<th>").text("Name"));
+                headerRow.append($("<th>").text("Country"));
+                headerRow.append($("<th>").text("City"));
+
+                thead.append(headerRow);
+
+                innerMap.forEach(function(value, name) {
+                    var row = $("<tr>");
+
+                    var kpiCell = $("<td>").text(kpi);
+                    var nameCell = $("<td>").text(name);
+                    var countryCell = $("<td>").text(value.country);
+                    var cityCell = $("<td>").text(value.city);
+
+                    // Add filtered class to the cells if showAll is false
+                    if (!showAll) {
+                        kpiCell.addClass("filtered");
+                        nameCell.addClass("filtered");
+                        countryCell.addClass("filtered");
+                        cityCell.addClass("filtered");
+                    }
+
+                    row.append(kpiCell);
+                    row.append(nameCell);
+                    row.append(countryCell);
+                    row.append(cityCell);
+
+                    row.on("click", function() {
+                        // Perform action when cell is clicked
+                        console.log("Clicked cell: " + name);
+                    });
+
+                    tbody.append(row);
+                });
+
+                table.append(thead);
+                table.append(tbody);
+
+                $("#tables-container").append(table);
+            }
+
+            $("#applyFilterButton").on("click", function() {
+                var filter1Values = $("#filter1").val() || [];
+                var filter2Values = $("#filter2").val() || [];
+
+                renderTables(filter1Values, filter2Values);
+            });
+
+            // Initial rendering
+            renderTables([], []);
+        });
+    </script>
+</body>
+
+</html>
