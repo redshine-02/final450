@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filter and Data Table</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px;
+            max-width: 400px;
+        }
+        .table-container {
+            max-height: 300px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <h2>Filter</h2>
+            <label for="subdepartment">Subdepartment:</label>
+            <select id="subdepartment">
+                {{range .Subdepartments}}
+                <option value="{{.Value}}">{{.Label}}</option>
+                {{end}}
+            </select>
+
+            <label for="timeline">Timeline:</label>
+            <select id="timeline">
+                {{range .Timelines}}
+                <option value="{{.Value}}">{{.Label}}</option>
+                {{end}}
+            </select>
+        </div>
+
+        <div class="box">
+            <h2>Data Tables</h2>
+            <div class="table-container">
+                <div class="row">
+                    {{range .Tables}}
+                    <div class="col">
+                        <h3>{{.Title}}</h3>
+                        <div class="table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        {{range .Headings}}
+                                        <th>{{.}}</th>
+                                        {{end}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{range .Rows}}
+                                    <tr>
+                                        {{range .Columns}}
+                                        <td>{{.}}</td>
+                                        {{end}}
+                                    </tr>
+                                    {{end}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
